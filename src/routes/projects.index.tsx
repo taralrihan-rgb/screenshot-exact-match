@@ -92,10 +92,10 @@ function CreateProjectDialog({ open, onOpenChange }: { open: boolean; onOpenChan
   const { addProject } = useStore();
   const empty = { name: "", location: "", type: "", stage: "", owner: "" };
   const [f, setF] = useState(empty);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof typeof empty, string>>>({});
 
   const submit = () => {
-    const e: Record<string, string> = {};
+    const e: Partial<Record<keyof typeof empty, string>> = {};
     if (f.name.trim().length < 3) e.name = "Enter a project name (min 3 characters).";
     if (!f.location.trim()) e.location = "Enter a location.";
     if (!f.type) e.type = "Choose a project type.";
