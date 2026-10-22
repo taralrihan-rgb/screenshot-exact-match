@@ -1,12 +1,16 @@
-import type { Requirement } from "@/lib/demo-data";
+import { toast } from "sonner";
+import type { Requirement, ReqStatus } from "@/lib/demo-data";
 import { useStore } from "@/lib/store";
 import { formatDate, isOverdue } from "@/lib/metrics";
-import { COMPLETE_STATUSES } from "@/lib/demo-data";
+import { COMPLETE_STATUSES, TEAM } from "@/lib/demo-data";
 import { StatusBadge } from "./ui-bits";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const REQ_STATUSES: ReqStatus[] = ["Not started", "In progress", "Submitted", "Changes requested", "Approved", "Not applicable", "Needs verification"];
 
 export function RequirementsTable({ rows, showProject }: { rows: Requirement[]; showProject?: boolean }) {
-  const { projects } = useStore();
+  const { projects, setRequirementStatus, setRequirementResponsible } = useStore();
   return (
     <div className="overflow-x-auto rounded-lg border bg-card">
       <Table>
@@ -31,8 +35,30 @@ export function RequirementsTable({ rows, showProject }: { rows: Requirement[]; 
               {showProject && <TableCell className="min-w-40">{projects.find((p) => p.id === r.projectId)?.name}</TableCell>}
               <TableCell>{r.category}</TableCell>
               <TableCell><StatusBadge value={r.applicability} /></TableCell>
-              <TableCell><StatusBadge value={r.status} /></TableCell>
-              <TableCell className="whitespace-nowrap">{r.responsible}</TableCell>
+              <TableCell>
+                <Select
+                  value={r.status}
+                  onValueChange={(v) => {
+                    setRequirementStatus(r.id, v as ReqStatus);
+                    toast.success("Workflow status updated (demo session only — not legal compliance).");
+                  }}
+                >
+                  <SelectTrigger className="h-8 w-44" aria-label={`Workflow status for ${r.name}`}><SelectValue /></SelectTrigger>
+                  <SelectContent>{REQ_STATUSES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+                </Select>
+              </TableCell>
+              <TableCell>
+                <Select
+                  value={r.responsible}
+                  onValueChange={(v) => {
+                    setRequirementResponsible(r.id, v);
+                    toast.success("Responsible person updated (demo session only).");
+                  }}
+                >
+                  <SelectTrigger className="h-8 w-40" aria-label={`Responsible person for ${r.name}`}><SelectValue /></SelectTrigger>
+                  <SelectContent>{TEAM.map((t) => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
+                </Select>
+              </TableCell>
               <TableCell className="whitespace-nowrap font-mono text-xs">
                 {formatDate(r.dueDate)}
                 {isOverdue(r.dueDate, COMPLETE_STATUSES.includes(r.status)) && <StatusBadge value="Overdue" className="ml-1" />}

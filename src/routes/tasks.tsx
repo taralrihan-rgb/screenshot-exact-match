@@ -21,22 +21,29 @@ export const Route = createFileRoute("/tasks")({
 });
 
 function Tasks() {
-  const { tasks, projects, requirements, setTaskStatus } = useStore();
+  const { tasks, projects, requirements, setTaskStatus, setTaskResponsible } = useStore();
   const [status, setStatus] = useState("open");
   const [person, setPerson] = useState("all");
   const [priority, setPriority] = useState("all");
+  const [project, setProject] = useState("all");
 
   const rows = tasks
     .filter((t) =>
       (status === "all" || (status === "open" ? t.status !== "Completed" : status === "overdue" ? isOverdue(t.dueDate, t.status === "Completed") : t.status === "Completed")) &&
       (person === "all" || t.responsible === person) &&
-      (priority === "all" || t.priority === priority),
+      (priority === "all" || t.priority === priority) &&
+      (project === "all" || t.projectId === project),
     )
     .sort((a, b) => a.dueDate.localeCompare(b.dueDate));
 
   const toggle = (id: string, done: boolean) => {
     setTaskStatus(id, done ? "Completed" : "Open");
     toast.success(done ? "Task marked complete (demo session only)." : "Task reopened (demo session only).");
+  };
+
+  const reassign = (id: string, who: string) => {
+    setTaskResponsible(id, who);
+    toast.success("Task reassigned (demo session only).");
   };
 
   return (
@@ -68,6 +75,13 @@ function Tasks() {
             <SelectItem value="Low">Low</SelectItem>
           </SelectContent>
         </Select>
+        <Select value={project} onValueChange={setProject}>
+          <SelectTrigger className="sm:w-64"><SelectValue /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All projects</SelectItem>
+            {projects.map((p) => <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>)}
+          </SelectContent>
+        </Select>
       </div>
 
       {rows.length === 0 ? <EmptyState title="No tasks match these filters" hint="All clear for this view." /> : (
@@ -86,7 +100,10 @@ function Tasks() {
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 pl-7 sm:pl-0">
-                  <span className="text-xs text-muted-foreground">{t.responsible}</span>
+                  <Select value={t.responsible} onValueChange={(v) => reassign(t.id, v)}>
+                    <SelectTrigger className="h-8 w-40" aria-label={`Responsible person for ${t.title}`}><SelectValue /></SelectTrigger>
+                    <SelectContent>{TEAM.map((m) => <SelectItem key={m} value={m}>{m}</SelectItem>)}</SelectContent>
+                  </Select>
                   <StatusBadge value={t.priority} />
                   <StatusBadge value={t.status} />
                   {isOverdue(t.dueDate, done) && <StatusBadge value="Overdue" />}
