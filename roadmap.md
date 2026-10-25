@@ -1,5 +1,11 @@
 # Roadmap
 
+## Pilot implementation
+- [ ] Centralized application status cards, filters, and editable tracking statuses
+- [ ] Required demo Taluka/Village autocomplete and safe project editing
+- [ ] Atomic template checklist creation and ordered Pre-Approval task workflow
+- [ ] Automated and browser verification; document data and persistence limitations
+
 - [x] Projects: create-project form with validation (already working)
 - [x] Dashboard: counts derived from shared demo data (already working)
 - [ ] Checklist: edit requirement workflow status and responsible person (applicability stays separate)
