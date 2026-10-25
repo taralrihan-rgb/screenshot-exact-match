@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useStore } from "@/lib/store";
 import { summarize, isOverdue, daysFromToday, formatDate } from "@/lib/metrics";
 import { COMPLETE_STATUSES } from "@/lib/demo-data";
+import { ApplicationSummary } from "@/components/app/application-summary";
 import { PageHeader, StatCard, Panel, StatusBadge, VerificationNotice, EmptyState } from "@/components/app/ui-bits";
 
 export const Route = createFileRoute("/")({
@@ -36,6 +37,7 @@ function Dashboard() {
     <>
       <PageHeader title="Dashboard" description="Demonstration workspace — all figures are fictional." />
       <div className="mb-6"><VerificationNotice /></div>
+      <ApplicationSummary />
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
         <StatCard label="Active projects" value={active} />
         <StatCard label="Requirements complete" value={s.complete} hint={`of ${s.total} (workflow)`} />

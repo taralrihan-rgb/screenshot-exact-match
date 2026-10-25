@@ -1,6 +1,6 @@
 import { COMPLETE_STATUSES, DEMO_TODAY, type Requirement, type Task } from "./demo-data";
 
-export const isOverdue = (date: string, done: boolean) => !done && date < DEMO_TODAY;
+export const isOverdue = (date: string, done: boolean) => Boolean(date) && !done && date < DEMO_TODAY;
 
 export function daysFromToday(date: string) {
   return Math.round((new Date(date).getTime() - new Date(DEMO_TODAY).getTime()) / 86400000);

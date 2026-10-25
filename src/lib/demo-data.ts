@@ -13,6 +13,9 @@ export interface Project {
   owner: string;
   team: string[];
   description: string;
+  talukaId?: string;
+  villageId?: string;
+  workflowStatus?: string;
 }
 
 export type ReqStatus =
@@ -36,6 +39,8 @@ export interface Requirement {
   evidence: "Not uploaded" | "Draft" | "Uploaded" | "Expired";
   sourceRef: string;
   lastVerified: string | null;
+  templateKey?: string;
+  notes?: string;
 }
 
 export interface DocumentRecord {
@@ -49,7 +54,7 @@ export interface DocumentRecord {
   reviewDate: string | null;
 }
 
-export type TaskStatus = "Open" | "In progress" | "Completed";
+export type TaskStatus = "Open" | "In progress" | "Blocked" | "Completed";
 export interface Task {
   id: string;
   title: string;
@@ -59,6 +64,7 @@ export interface Task {
   dueDate: string;
   priority: "High" | "Medium" | "Low";
   status: TaskStatus;
+  workflowStep?: number;
 }
 
 export interface Approval {
@@ -66,7 +72,7 @@ export interface Approval {
   reference: string;
   projectId: string;
   submitted: string;
-  status: "Draft" | "Submitted" | "Query raised" | "Under review" | "Granted (recorded)";
+  status: "Draft" | "Submitted" | "Query raised" | "Under review" | "Granted (recorded)" | "Rejected" | "Document Reassignment" | "Forwarded Proposal" | "Reassign Proposal" | "Rejected Proposal" | "In Process";
   pendingAction: string;
   responsible: string;
   nextFollowUp: string;
@@ -162,3 +168,29 @@ export const activity: Activity[] = [
 ];
 
 export const COMPLETE_STATUSES: ReqStatus[] = ["Approved", "Not applicable"];
+
+// Fictional templates adapted from this demo's existing examples, NOT statutory requirements.
+export interface ChecklistTemplateItem {
+  key: string;
+  name: string;
+  category: string;
+  notes: string;
+  stage?: ProjectStage;
+  requiredForTemplate: boolean;
+}
+export const CHECKLIST_TEMPLATES: Record<string, ChecklistTemplateItem[]> = {
+  Residential: [
+    { key: "title", name: "Land title documentation (example)", category: "Land & title", notes: "Fictional example — applicability and source require professional review.", requiredForTemplate: true },
+    { key: "site-plan", name: "Site plan submission (example)", category: "Planning", notes: "Fictional example — not an official Maharashtra document list.", requiredForTemplate: true },
+  ],
+  Commercial: [
+    { key: "title", name: "Land title documentation (example)", category: "Land & title", notes: "Fictional example — review against official sources.", requiredForTemplate: true },
+    { key: "zoning", name: "Zoning confirmation (example)", category: "Planning", notes: "Fictional example — applicability must be reviewed.", requiredForTemplate: true },
+  ],
+  "Plotted development": [
+    { key: "layout", name: "Layout plan draft (example)", category: "Planning", notes: "Fictional example — applicability must be reviewed.", requiredForTemplate: true },
+    { key: "drainage", name: "Drainage study (example)", category: "Infrastructure", notes: "Optional fictional template item — professional review required.", requiredForTemplate: false },
+  ],
+};
+// Mixed-use intentionally has no template: never invent requirements to fill a gap.
+export const PRE_APPROVAL_STEPS = ["Engineer Drawing", "Tracing", "DSC on Application Form and Documents", "Pre-Payment"] as const;
