@@ -31,7 +31,7 @@ export function RequirementsTable({ rows, showProject }: { rows: Requirement[]; 
         <TableBody>
           {rows.map((r) => (
             <TableRow key={r.id}>
-              <TableCell className="min-w-48 font-medium">{r.name}</TableCell>
+              <TableCell className="min-w-48 font-medium">{r.name}{r.notes && <p className="mt-1 text-xs font-normal text-muted-foreground">{r.notes}</p>}</TableCell>
               {showProject && <TableCell className="min-w-40">{projects.find((p) => p.id === r.projectId)?.name}</TableCell>}
               <TableCell>{r.category}</TableCell>
               <TableCell><StatusBadge value={r.applicability} /></TableCell>

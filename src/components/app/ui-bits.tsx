@@ -17,6 +17,7 @@ const toneMap: Record<string, Tone> = {
   "In progress": "info", Submitted: "info", "Under review": "info", Active: "info",
   "Changes requested": "danger", Expired: "danger", "Query raised": "danger", High: "danger", Overdue: "danger",
   "Needs verification": "warning", "Needs review": "warning", Pending: "warning", Draft: "warning", Medium: "warning", "On hold": "warning",
+  Blocked: "danger", Rejected: "danger", "Rejected Proposal": "danger", "In Process": "info", "Forwarded Proposal": "info", "Document Reassignment": "warning", "Reassign Proposal": "warning",
 };
 
 export function StatusBadge({ value, className }: { value: string; className?: string }) {
