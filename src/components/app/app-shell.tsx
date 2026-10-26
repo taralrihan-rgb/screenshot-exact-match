@@ -1,6 +1,16 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
-import { LayoutDashboard, FolderKanban, ListChecks, FileText, CalendarClock, Stamp, BarChart3, Menu, ShieldCheck } from "lucide-react";
+import {
+  LayoutDashboard,
+  FolderKanban,
+  ListChecks,
+  FileText,
+  CalendarClock,
+  Stamp,
+  BarChart3,
+  Menu,
+  ShieldCheck,
+} from "lucide-react";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
@@ -58,7 +68,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col bg-nav lg:flex">
         <Brand />
         <NavList />
-        <p className="mt-auto px-6 py-4 text-[11px] text-nav-muted">Prototype · fictional data · changes reset on reload</p>
+        <p className="mt-auto px-6 py-4 text-[11px] text-nav-muted">
+          Prototype · fictional data · changes reset on reload
+        </p>
       </aside>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left" className="w-64 border-0 bg-nav p-0">
@@ -69,11 +81,19 @@ export function AppShell({ children }: { children: ReactNode }) {
       </Sheet>
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-card px-4 lg:px-8">
-          <button aria-label="Open navigation" onClick={() => setOpen(true)} className="rounded-md p-2 hover:bg-muted lg:hidden">
+          <button
+            aria-label="Open navigation"
+            onClick={() => setOpen(true)}
+            className="rounded-md p-2 hover:bg-muted lg:hidden"
+          >
             <Menu className="h-5 w-5" />
           </button>
-          <span className="rounded-full bg-warning-soft px-2.5 py-0.5 text-xs font-medium text-warning">Demonstration workspace</span>
-          <span className="ml-auto hidden text-xs text-muted-foreground sm:block">Signed in as Demo User (simulated)</span>
+          <span className="rounded-full bg-warning-soft px-2.5 py-0.5 text-xs font-medium text-warning">
+            Demonstration workspace
+          </span>
+          <span className="ml-auto hidden text-xs text-muted-foreground sm:block">
+            Signed in as Demo User (simulated)
+          </span>
         </header>
         <main className="mx-auto w-full max-w-7xl flex-1 p-4 lg:p-8">{children}</main>
       </div>
