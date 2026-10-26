@@ -16,7 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/projects/")({
-  validateSearch: (search: Record<string, unknown>): { workflow?: string } => ({ workflow: typeof search.workflow === "string" ? search.workflow : undefined }),
+  validateSearch: (search: Record<string, unknown>): { workflow?: string | undefined } => ({ workflow: typeof search["workflow"] === "string" ? search["workflow"] : undefined }),
   head: () => ({
     meta: [
       { title: "Projects — ClearTrack demo" },

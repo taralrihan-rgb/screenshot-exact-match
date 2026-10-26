@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export function LocationCombobox({ label, value, options, onSelect, onQuery, disabled, error }: {
   label: string; value: string; options: { id: string; name: string }[];
-  onSelect: (id: string, name: string) => void; onQuery: (query: string) => void; disabled?: boolean; error?: string;
+  onSelect: (id: string, name: string) => void; onQuery: (query: string) => void; disabled?: boolean; error?: string | undefined;
 }) {
   const id = useId();
   const [open, setOpen] = useState(false);

@@ -95,7 +95,7 @@ function Tasks() {
                   <div>
                     <p className={done ? "text-sm text-muted-foreground line-through" : "text-sm font-medium"}>{t.title}</p>
                     <p className="text-xs text-muted-foreground">
-                      {projects.find((p) => p.id === t.projectId)?.name} · {requirements.find((r) => r.id === t.requirementId)?.name}
+                      {projects.find((p) => p.id === t.projectId)?.name} · {t.workflowStep !== undefined ? "Pre-Approval workflow" : requirements.find((r) => r.id === t.requirementId)?.name}
                     </p>
                   </div>
                 </div>
