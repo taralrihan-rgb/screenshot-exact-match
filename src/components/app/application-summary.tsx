@@ -17,6 +17,7 @@ export function ApplicationSummary() {
       <h2 id="approval-summary" className="mb-3 text-sm font-semibold">
         Approval workflow status
       </h2>
+      <p className="mb-3 text-xs text-muted-foreground">Application records plus project-only tracking where no application exists. Counts are not government approval totals.</p>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
         {APPLICATION_STATUSES.map((status, i) => {
           const Icon = icons[i] ?? LoaderCircle;
@@ -45,6 +46,7 @@ export function ApplicationSummary() {
           {selected ?? "All workflow records"} · {rows.length} records ·{" "}
           {records.filter((r) => r.status === "Unmapped").length} unmapped
         </p>
+        <Button variant="ghost" size="sm" aria-pressed={selected === "Unmapped"} onClick={() => setSelected("Unmapped")}>Unmapped</Button>
         {selected && (
           <Button variant="ghost" size="sm" onClick={() => setSelected(undefined)}>
             Clear filter
