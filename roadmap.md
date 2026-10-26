@@ -1,17 +1,17 @@
 # Roadmap
 
 ## Pilot implementation
-- [ ] Centralized application status cards, filters, and editable tracking statuses
-- [ ] Required demo Taluka/Village autocomplete and safe project editing
-- [ ] Atomic template checklist creation and ordered Pre-Approval task workflow
-- [ ] Automated and browser verification; document data and persistence limitations
+- [x] Centralized application status cards, filters, and editable tracking statuses
+- [x] Required demo Taluka/Village autocomplete and safe project editing
+- [x] Atomic template checklist creation and ordered Pre-Approval task workflow
+- [x] Automated and browser verification; document data and persistence limitations
 
 - [x] Projects: create-project form with validation (already working)
 - [x] Dashboard: counts derived from shared demo data (already working)
-- [ ] Checklist: edit requirement workflow status and responsible person (applicability stays separate)
-- [ ] Tasks: change responsible person, add project filter, keep overdue logic untouched
-- [ ] Verify: run tests, build check, browser check of edited flows
-- [ ] Report: what works, what is simulated, known limitations
+- [x] Checklist: edit requirement workflow status and responsible person (applicability stays separate)
+- [x] Tasks: change responsible person, add project filter, keep overdue logic untouched
+- [x] Verify: 20 tests pass, automatic build OK, lint 0 errors / 7 warnings, browser pilot flows pass
+- [x] Report: configuration, simulation, mapping and persistence limitations recorded in PILOT-NOTES.md
 
 ## Status after polish pass
 - [x] Checklist: status + responsible editable, verified in browser
