@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useStore } from "@/lib/store";
-import type { ReqStatus } from "@/lib/demo-data";
+import { CHECKLIST_TEMPLATES, type ReqStatus } from "@/lib/demo-data";
 import { PageHeader, VerificationNotice, EmptyState } from "@/components/app/ui-bits";
 import { RequirementsTable } from "@/components/app/requirements-table";
 import {
@@ -89,7 +89,17 @@ function Checklist() {
         </Select>
       </div>
       {rows.length === 0 ? (
-        <EmptyState title="No requirements match these filters" />
+        (() => {
+          const sel = projects.find((p) => p.id === project);
+          return sel && !CHECKLIST_TEMPLATES[sel.type] ? (
+            <EmptyState
+              title="Checklist needs configuration"
+              hint={`No checklist template is configured for ${sel.type}. No requirements have been invented.`}
+            />
+          ) : (
+            <EmptyState title="No requirements match these filters" />
+          );
+        })()
       ) : (
         <RequirementsTable rows={rows} showProject />
       )}
