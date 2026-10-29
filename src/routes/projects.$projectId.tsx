@@ -108,6 +108,12 @@ function ProjectDetail() {
               <dt className="text-xs text-muted-foreground">Stage</dt>
               <dd>{p.stage}</dd>
             </div>
+            {p.preApprovalOptions && p.preApprovalOptions.length > 0 && (
+              <div>
+                <dt className="text-xs text-muted-foreground">Pre-approval options</dt>
+                <dd>{p.preApprovalOptions.join(", ")}</dd>
+              </div>
+            )}
             <div>
               <dt className="text-xs text-muted-foreground">Team</dt>
               <dd>{p.team.join(", ")}</dd>

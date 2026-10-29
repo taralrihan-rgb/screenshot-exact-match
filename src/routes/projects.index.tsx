@@ -7,7 +7,14 @@ import { LocationCombobox } from "@/components/app/location-combobox";
 import { locationNames, searchTalukas, searchVillages, validLocation } from "@/lib/locations";
 import { APPLICATION_STATUSES, applicationRows } from "@/lib/workflow";
 import { summarize } from "@/lib/metrics";
-import { PROJECT_TYPES, STAGES, TEAM, type ProjectStage } from "@/lib/demo-data";
+import {
+  PRE_APPROVAL_STEPS,
+  PROJECT_TYPES,
+  STAGES,
+  TEAM,
+  type ProjectStage,
+} from "@/lib/demo-data";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   PageHeader,
   StatusBadge,
@@ -233,6 +240,7 @@ function CreateProjectDialog({
     owner: "",
   };
   const [f, setF] = useState(empty);
+  const [preOpts, setPreOpts] = useState<string[]>([]);
   const [errors, setErrors] = useState<Partial<Record<keyof typeof empty, string>>>({});
 
   const submit = () => {
@@ -264,9 +272,13 @@ function CreateProjectDialog({
         stage: f.stage as ProjectStage,
         owner: f.owner,
         description: "Created in demo session.",
+        ...(f.stage === "Pre-approval"
+          ? { preApprovalOptions: PRE_APPROVAL_STEPS.filter((o) => preOpts.includes(o)) }
+          : {}),
       });
       toast.success("Project and configured fictional checklist created — resets on reload.");
       setF(empty);
+      setPreOpts([]);
       setTalukaQuery("");
       setVillageQuery("");
       setErrors({});
@@ -373,6 +385,29 @@ function CreateProjectDialog({
             {field("type", "Type", sel("type", PROJECT_TYPES))}
             {field("stage", "Stage", sel("stage", STAGES))}
           </div>
+          {f.stage === "Pre-approval" ? (
+            <fieldset className="grid gap-2">
+              <legend className="mb-1 text-sm font-medium">Pre-approval options</legend>
+              {PRE_APPROVAL_STEPS.map((opt) => (
+                <label key={opt} className="flex items-center gap-2 text-sm">
+                  <Checkbox
+                    checked={preOpts.includes(opt)}
+                    onCheckedChange={(c) =>
+                      setPreOpts((cur) => (c ? [...cur, opt] : cur.filter((o) => o !== opt)))
+                    }
+                  />
+                  {opt}
+                </label>
+              ))}
+            </fieldset>
+          ) : (
+            preOpts.length > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {preOpts.length} Pre-approval option(s) kept; they are saved only if the stage is
+                Pre-approval.
+              </p>
+            )
+          )}
           {field("owner", "Assigned team member", sel("owner", TEAM))}
         </div>
         <DialogFooter>
