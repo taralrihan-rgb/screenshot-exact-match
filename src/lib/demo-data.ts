@@ -17,6 +17,7 @@ export interface Project {
   talukaId?: string;
   villageId?: string;
   workflowStatus?: string;
+  preApprovalOptions?: string[];
 }
 
 export type ReqStatus =
