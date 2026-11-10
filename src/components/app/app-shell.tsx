@@ -36,8 +36,8 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
             to={n.to}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2 text-sm text-nav-muted transition-colors hover:bg-nav-active hover:text-nav-foreground",
-              active && "bg-nav-active text-nav-foreground",
+              "flex items-center gap-3 rounded-md px-3 py-2 text-sm text-nav-muted transition-colors hover:bg-sidebar-accent hover:text-nav-foreground",
+              active && "bg-nav-active font-medium text-nav-foreground shadow-sm",
             )}
           >
             <n.icon className="h-4 w-4" />
