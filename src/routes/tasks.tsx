@@ -19,12 +19,12 @@ export const Route = createFileRoute("/tasks")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Tasks & deadlines — ClearTrack demo" },
+      { title: "Tasks & deadlines — Realtify demo" },
       {
         name: "description",
         content: "Who needs to act and by when — tasks linked to projects and requirements.",
       },
-      { property: "og:title", content: "Tasks & deadlines — ClearTrack demo" },
+      { property: "og:title", content: "Tasks & deadlines — Realtify demo" },
       {
         property: "og:description",
         content: "Tasks linked to projects and requirements, with deadlines.",

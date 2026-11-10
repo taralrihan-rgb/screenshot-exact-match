@@ -27,12 +27,12 @@ export const Route = createFileRoute("/checklist")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Compliance checklist — ClearTrack demo" },
+      { title: "Compliance checklist — Realtify demo" },
       {
         name: "description",
         content: "Illustrative requirement checklist with status, evidence and source references.",
       },
-      { property: "og:title", content: "Compliance checklist — ClearTrack demo" },
+      { property: "og:title", content: "Compliance checklist — Realtify demo" },
       {
         property: "og:description",
         content: "Illustrative requirement checklist with evidence and verification.",

@@ -36,8 +36,8 @@ function NavList({ onNavigate }: { onNavigate?: () => void }) {
             to={n.to}
             onClick={onNavigate}
             className={cn(
-              "flex items-center gap-3 rounded-md px-3 py-2 text-sm text-nav-muted transition-colors hover:bg-nav-active hover:text-nav-foreground",
-              active && "bg-nav-active text-nav-foreground",
+              "flex items-center gap-3 rounded-md px-3 py-2 text-sm text-nav-muted transition-colors hover:bg-sidebar-accent hover:text-nav-foreground",
+              active && "bg-nav-active font-medium text-nav-foreground shadow-sm",
             )}
           >
             <n.icon className="h-4 w-4" />
@@ -54,7 +54,7 @@ function Brand() {
     <div className="flex items-center gap-2 px-6 py-5">
       <ShieldCheck className="h-6 w-6 text-primary-foreground" />
       <div>
-        <p className="text-sm font-semibold text-nav-foreground">ClearTrack</p>
+        <p className="text-sm font-semibold text-nav-foreground">Realtify</p>
         <p className="text-[11px] text-nav-muted">Demo workspace</p>
       </div>
     </div>

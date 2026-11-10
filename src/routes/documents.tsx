@@ -20,12 +20,12 @@ export const Route = createFileRoute("/documents")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Document register — ClearTrack demo" },
+      { title: "Document register — Realtify demo" },
       {
         name: "description",
         content: "Register of evidence documents, versions and review dates per project.",
       },
-      { property: "og:title", content: "Document register — ClearTrack demo" },
+      { property: "og:title", content: "Document register — Realtify demo" },
       { property: "og:description", content: "Evidence documents, versions and review dates." },
     ],
   }),

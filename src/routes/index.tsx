@@ -17,13 +17,13 @@ export const Route = createFileRoute("/")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Dashboard — ClearTrack demo" },
+      { title: "Dashboard — Realtify demo" },
       {
         name: "description",
         content:
           "Overview of active projects, outstanding requirements, overdue tasks and upcoming deadlines.",
       },
-      { property: "og:title", content: "Dashboard — ClearTrack demo" },
+      { property: "og:title", content: "Dashboard — Realtify demo" },
       {
         property: "og:description",
         content: "Overview of active projects, outstanding requirements and deadlines.",
