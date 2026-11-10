@@ -27,12 +27,12 @@ export const Route = createFileRoute("/approvals")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Approvals tracker — ClearTrack demo" },
+      { title: "Approvals tracker — Realtify demo" },
       {
         name: "description",
         content: "Track application references, pending actions and follow-up dates.",
       },
-      { property: "og:title", content: "Approvals tracker — ClearTrack demo" },
+      { property: "og:title", content: "Approvals tracker — Realtify demo" },
       {
         property: "og:description",
         content: "Application references, pending actions and follow-ups.",

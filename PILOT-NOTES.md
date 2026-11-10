@@ -1,4 +1,4 @@
-# ClearTrack pilot configuration and limitations
+# Realtify pilot configuration and limitations
 
 ## Delivered
 - Six approval workflow cards filter a shared application/project-tracking list, with an Unmapped filter and a clear action. Project and approval filters use the same mapping. Status changes update shared counts and activity.

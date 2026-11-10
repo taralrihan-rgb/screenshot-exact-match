@@ -54,7 +54,7 @@ function Brand() {
     <div className="flex items-center gap-2 px-6 py-5">
       <ShieldCheck className="h-6 w-6 text-primary-foreground" />
       <div>
-        <p className="text-sm font-semibold text-nav-foreground">ClearTrack</p>
+        <p className="text-sm font-semibold text-nav-foreground">Realtify</p>
         <p className="text-[11px] text-nav-muted">Demo workspace</p>
       </div>
     </div>

@@ -30,12 +30,12 @@ export const Route = createFileRoute("/projects/$projectId")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Project details — ClearTrack demo" },
+      { title: "Project details — Realtify demo" },
       {
         name: "description",
         content: "Project overview, requirements summary, outstanding actions and activity.",
       },
-      { property: "og:title", content: "Project details — ClearTrack demo" },
+      { property: "og:title", content: "Project details — Realtify demo" },
       {
         property: "og:description",
         content: "Project overview, requirements and outstanding actions.",

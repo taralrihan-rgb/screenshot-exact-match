@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ClearTrack — Real Estate Compliance Workflow" },
+      { title: "Realtify — Real Estate Compliance Workflow" },
       {
         name: "description",
         content:
