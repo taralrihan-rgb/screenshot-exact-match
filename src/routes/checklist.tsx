@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useStore } from "@/lib/store";
-import { CHECKLIST_TEMPLATES, type ReqStatus } from "@/lib/demo-data";
+import { CHECKLIST_TEMPLATES } from "@/lib/templates";
+import type { ReqStatus } from "@/lib/demo-data";
 import { PageHeader, VerificationNotice, EmptyState } from "@/components/app/ui-bits";
 import { RequirementsTable } from "@/components/app/requirements-table";
 import {
