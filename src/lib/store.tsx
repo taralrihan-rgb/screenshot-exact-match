@@ -60,7 +60,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (!task) return s;
       return withEvent(
         { ...s, tasks: s.tasks.map((t) => (t.id === id ? { ...t, ...patch } : t)) },
-        { ...event, projectId: task.projectId, entityType: "task", entityId: id },
+        {
+          ...event,
+          projectId: task.projectId,
+          entityType: "task",
+          entityId: id,
+          text: `Task "${task.title}" ${event.text}`,
+        },
       );
     });
 
@@ -74,7 +80,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (!req) return s;
       return withEvent(
         { ...s, requirements: s.requirements.map((r) => (r.id === id ? { ...r, ...patch } : r)) },
-        { ...event, projectId: req.projectId, entityType: "requirement", entityId: id },
+        {
+          ...event,
+          projectId: req.projectId,
+          entityType: "requirement",
+          entityId: id,
+          text: `Requirement "${req.name}" ${event.text}`,
+        },
       );
     });
 
