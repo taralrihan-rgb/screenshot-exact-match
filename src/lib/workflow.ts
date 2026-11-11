@@ -1,6 +1,6 @@
+// Centralised business/workflow logic. UI components call the store, which
+// calls these functions — no persistence logic lives in components.
 import {
-  CHECKLIST_TEMPLATES,
-  PRE_APPROVAL_STEPS,
   PROJECT_TYPES,
   STAGES,
   TEAM,
@@ -9,7 +9,10 @@ import {
   type Requirement,
   type Task,
 } from "./demo-data";
+import { CHECKLIST_TEMPLATES, PRE_APPROVAL_STEPS } from "./templates";
+import { projectInputSchema, parseOrThrow } from "./validation";
 import { validLocation } from "./locations";
+import { DEMO_ORGANISATION, demoUserId } from "./types";
 
 export const APPLICATION_STATUSES = [
   "Rejected",
@@ -49,15 +52,10 @@ export function applicationRows(projects: Project[], approvals: Approval[]) {
   ];
 }
 export type ProjectInput = Omit<Project, "id" | "status" | "team" | "workflowStatus">;
-export function createProjectBundle(input: ProjectInput, id: string) {
-  if (
-    input.name.trim().length < 3 ||
-    !input.location.trim() ||
-    !PROJECT_TYPES.includes(input.type) ||
-    !STAGES.includes(input.stage) ||
-    !TEAM.includes(input.owner) ||
-    !validLocation(input.talukaId ?? "", input.villageId ?? "")
-  ) {
+export function createProjectBundle(rawInput: ProjectInput, id: string) {
+  // Zod validation first — a failed bundle never partially updates state.
+  const input = parseOrThrow(projectInputSchema, rawInput);
+  if (!validLocation(input.talukaId ?? "", input.villageId ?? "")) {
     throw new Error(
       "Choose valid project fields and a Taluka/Village pair from the demo suggestions.",
     );
@@ -67,15 +65,20 @@ export function createProjectBundle(input: ProjectInput, id: string) {
     name: input.name.trim(),
     location: input.location.trim(),
     id,
+    organisationId: DEMO_ORGANISATION.id,
+    ownerUserId: demoUserId(input.owner),
     status: "Active",
     team: [input.owner],
   };
-  const requirements: Requirement[] = (CHECKLIST_TEMPLATES[input.type] ?? [])
+  const template = CHECKLIST_TEMPLATES[input.type];
+  const requirements: Requirement[] = (template?.items ?? [])
     .filter((item) => !item.stage || item.stage === input.stage)
     .map((item) => ({
       id: `${id}-req-${item.key}`,
       projectId: id,
       templateKey: item.key,
+      templateVersion: template?.version,
+      required: item.requiredForTemplate,
       name: item.name,
       category: item.category,
       notes: `${item.notes} ${item.requiredForTemplate ? "Required in fictional template." : "Optional in fictional template."}`,
