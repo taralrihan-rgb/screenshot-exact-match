@@ -7,13 +7,8 @@ import { LocationCombobox } from "@/components/app/location-combobox";
 import { locationNames, searchTalukas, searchVillages, validLocation } from "@/lib/locations";
 import { APPLICATION_STATUSES, applicationRows } from "@/lib/workflow";
 import { summarize } from "@/lib/metrics";
-import {
-  PRE_APPROVAL_STEPS,
-  PROJECT_TYPES,
-  STAGES,
-  TEAM,
-  type ProjectStage,
-} from "@/lib/demo-data";
+import { PRE_APPROVAL_STEPS } from "@/lib/templates";
+import { PROJECT_TYPES, STAGES, TEAM, type ProjectStage } from "@/lib/demo-data";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   PageHeader,
