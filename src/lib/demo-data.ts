@@ -1,4 +1,6 @@
 // All records are FICTIONAL demonstration data. Replace with backend calls later.
+import { DEMO_ORGANISATION, DEMO_USERS } from "./types";
+import type { ActivityEventType, ActivityEntityType } from "./activity";
 
 export type ProjectStage =
   "Feasibility" | "Pre-approval" | "Approval in progress" | "Construction" | "Completion";
@@ -6,12 +8,16 @@ export type ProjectStatus = "Active" | "On hold" | "Completed";
 
 export interface Project {
   id: string;
+  /** Tenant placeholder — every record belongs to an organisation in the future model. */
+  organisationId?: string;
   name: string;
   location: string;
   type: string;
   stage: ProjectStage;
   status: ProjectStatus;
+  /** Display name today; migrate to ownerUserId with the backend. */
   owner: string;
+  ownerUserId?: string | null;
   team: string[];
   description: string;
   talukaId?: string;
@@ -34,24 +40,42 @@ export interface Requirement {
   projectId: string;
   name: string;
   category: string;
+  /** Applicability — never inferred automatically. */
   applicability: "Applicable" | "Needs review";
+  /** Internal workflow status only — NOT legal compliance. */
   status: ReqStatus;
   responsible: string;
   dueDate: string;
   evidence: "Not uploaded" | "Draft" | "Uploaded" | "Expired";
   sourceRef: string;
+  /** Verification status: null = never verified by a person. */
   lastVerified: string | null;
   templateKey?: string;
+  /** Version of the template this item was generated from. */
+  templateVersion?: string;
+  /** Required/optional classification within the fictional template. */
+  required?: boolean;
   notes?: string;
 }
 
 export interface DocumentRecord {
   id: string;
+  /** Display name of the document record. */
   name: string;
+  /** Original file name metadata (no file is stored in demo mode). */
+  fileName: string;
+  /** Future private object-storage path. Always null in demo mode — no file exists. */
+  storagePath: string | null;
+  mimeType: string | null;
+  fileSizeBytes: number | null;
+  /** Uploader placeholder for the future authenticated user. */
+  uploaderUserId: string | null;
   requirementId: string;
   projectId: string;
   version: string;
   status: "Pending" | "Received" | "Under review" | "Expired";
+  /** Registration/upload timestamp metadata (fixture date in demo mode). */
+  uploadedAt: string;
   dateAdded: string;
   reviewDate: string | null;
 }
@@ -93,16 +117,28 @@ export interface Approval {
 
 export interface Activity {
   id: string;
+  organisationId: string;
   projectId: string;
+  type: ActivityEventType;
+  entityType: ActivityEntityType;
+  entityId: string;
+  /** Human-readable description. */
   text: string;
+  /** Stable actor ID placeholder (future authenticated user ID). */
+  actorUserId: string;
+  /** Actor display name for presentation. */
   who: string;
+  /** Real ISO timestamp for new local events; fixture timestamp for demo rows. */
+  timestamp: string;
+  /** Display date (derived from timestamp for new events). */
   when: string;
 }
 
-// Fixed "today" so demo overdue/upcoming values are stable.
+// Fixture-only anchor date for reproducible demo fixtures. Business
+// calculations (overdue, upcoming) must NOT use this — see metrics.ts.
 export const DEMO_TODAY = "2026-10-19";
 
-export const TEAM = ["Ananya Rao", "Vikram Mehta", "Priya Nair", "Arjun Kapoor", "Sneha Iyer"];
+export const TEAM = DEMO_USERS.map((u) => u.displayName);
 
 export const PROJECT_TYPES = ["Residential", "Commercial", "Mixed-use", "Plotted development"];
 export const STAGES: ProjectStage[] = [
@@ -116,56 +152,66 @@ export const STAGES: ProjectStage[] = [
 export const projects: Project[] = [
   {
     id: "p1",
+    organisationId: DEMO_ORGANISATION.id,
     name: "Sample Greens Residency",
     location: "Demo City North (fictional)",
     type: "Residential",
     stage: "Approval in progress",
     status: "Active",
     owner: "Ananya Rao",
+    ownerUserId: "demo-u-ananya",
     team: ["Ananya Rao", "Vikram Mehta"],
     description: "Fictional 4-tower residential project used for demonstration.",
   },
   {
     id: "p2",
+    organisationId: DEMO_ORGANISATION.id,
     name: "Example Trade Centre",
     location: "Placeholder District (fictional)",
     type: "Commercial",
     stage: "Pre-approval",
     status: "Active",
     owner: "Vikram Mehta",
+    ownerUserId: "demo-u-vikram",
     team: ["Vikram Mehta", "Priya Nair"],
     description: "Fictional commercial office block.",
   },
   {
     id: "p3",
+    organisationId: DEMO_ORGANISATION.id,
     name: "Mock Lakeview Plots",
     location: "Sampletown East (fictional)",
     type: "Plotted development",
     stage: "Feasibility",
     status: "Active",
     owner: "Priya Nair",
+    ownerUserId: "demo-u-priya",
     team: ["Priya Nair"],
     description: "Fictional plotted layout, early feasibility.",
   },
   {
     id: "p4",
+    organisationId: DEMO_ORGANISATION.id,
     name: "Demo Heights Mixed-use",
     location: "Testville Central (fictional)",
     type: "Mixed-use",
     stage: "Construction",
     status: "Active",
     owner: "Arjun Kapoor",
+    ownerUserId: "demo-u-arjun",
     team: ["Arjun Kapoor", "Sneha Iyer"],
     description: "Fictional retail-plus-residential development.",
   },
   {
     id: "p5",
+    organisationId: DEMO_ORGANISATION.id,
     name: "Specimen Courtyard Homes",
     location: "Demo City South (fictional)",
     type: "Residential",
     stage: "Completion",
     status: "On hold",
     owner: "Sneha Iyer",
+    ownerUserId: "demo-u-sneha",
     team: ["Sneha Iyer", "Ananya Rao"],
     description: "Fictional low-rise housing, currently on hold.",
   },
@@ -378,97 +424,55 @@ export const requirements: Requirement[] = [
   ),
 ];
 
+const D = (
+  id: string,
+  name: string,
+  requirementId: string,
+  projectId: string,
+  version: string,
+  status: DocumentRecord["status"],
+  dateAdded: string,
+  reviewDate: string | null,
+  mimeType: string | null,
+  fileSizeBytes: number | null,
+  uploaderUserId: string | null,
+): DocumentRecord => ({
+  id,
+  name,
+  fileName: name,
+  storagePath: null, // demo metadata only — no file exists in storage
+  mimeType,
+  fileSizeBytes,
+  uploaderUserId,
+  requirementId,
+  projectId,
+  version,
+  status,
+  uploadedAt: dateAdded,
+  dateAdded,
+  reviewDate,
+});
+
 export const documents: DocumentRecord[] = [
-  {
-    id: "d1",
-    name: "Title_Deed_Sample.pdf",
-    requirementId: "r1",
-    projectId: "p1",
-    version: "v2",
-    status: "Received",
-    dateAdded: "2026-08-08",
-    reviewDate: null,
-  },
-  {
-    id: "d2",
-    name: "Site_Plan_Demo.dwg",
-    requirementId: "r2",
-    projectId: "p1",
-    version: "v3",
-    status: "Under review",
-    dateAdded: "2026-10-04",
-    reviewDate: "2026-11-04",
-  },
-  {
-    id: "d3",
-    name: "Env_Assessment_Draft.docx",
-    requirementId: "r3",
-    projectId: "p1",
-    version: "v1",
-    status: "Pending",
-    dateAdded: "2026-10-09",
-    reviewDate: null,
-  },
-  {
-    id: "d4",
-    name: "Structural_Cert_Example.pdf",
-    requirementId: "r5",
-    projectId: "p1",
-    version: "v1",
-    status: "Received",
-    dateAdded: "2026-10-11",
-    reviewDate: "2027-10-11",
-  },
-  {
-    id: "d5",
-    name: "Title_Records_TradeCentre.pdf",
-    requirementId: "r8",
-    projectId: "p2",
-    version: "v1",
-    status: "Received",
-    dateAdded: "2026-07-28",
-    reviewDate: null,
-  },
-  {
-    id: "d6",
-    name: "Drainage_Study_Draft.pdf",
-    requirementId: "r10",
-    projectId: "p3",
-    version: "v1",
-    status: "Pending",
-    dateAdded: "2026-10-14",
-    reviewDate: null,
-  },
-  {
-    id: "d7",
-    name: "Plan_Sanction_Record.pdf",
-    requirementId: "r11",
-    projectId: "p4",
-    version: "v1",
-    status: "Received",
-    dateAdded: "2026-05-10",
-    reviewDate: "2027-05-10",
-  },
-  {
-    id: "d8",
-    name: "Water_Application_Old.pdf",
-    requirementId: "r13",
-    projectId: "p4",
-    version: "v1",
-    status: "Expired",
-    dateAdded: "2025-09-01",
-    reviewDate: "2026-09-01",
-  },
-  {
-    id: "d9",
-    name: "Completion_Pack_Draft.zip",
-    requirementId: "r15",
-    projectId: "p5",
-    version: "v2",
-    status: "Under review",
-    dateAdded: "2026-09-25",
-    reviewDate: null,
-  },
+  D("d1", "Title_Deed_Sample.pdf", "r1", "p1", "v2", "Received", "2026-08-08", null,
+    "application/pdf", 482_000, "demo-u-ananya"),
+  D("d2", "Site_Plan_Demo.dwg", "r2", "p1", "v3", "Under review", "2026-10-04", "2026-11-04",
+    "application/acad", 1_240_000, "demo-u-vikram"),
+  D("d3", "Env_Assessment_Draft.docx", "r3", "p1", "v1", "Pending", "2026-10-09", null,
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", 96_000,
+    "demo-u-ananya"),
+  D("d4", "Structural_Cert_Example.pdf", "r5", "p1", "v1", "Received", "2026-10-11", "2027-10-11",
+    "application/pdf", 210_000, "demo-u-ananya"),
+  D("d5", "Title_Records_TradeCentre.pdf", "r8", "p2", "v1", "Received", "2026-07-28", null,
+    "application/pdf", 388_000, "demo-u-priya"),
+  D("d6", "Drainage_Study_Draft.pdf", "r10", "p3", "v1", "Pending", "2026-10-14", null,
+    "application/pdf", 154_000, "demo-u-priya"),
+  D("d7", "Plan_Sanction_Record.pdf", "r11", "p4", "v1", "Received", "2026-05-10", "2027-05-10",
+    "application/pdf", 502_000, "demo-u-arjun"),
+  D("d8", "Water_Application_Old.pdf", "r13", "p4", "v1", "Expired", "2025-09-01", "2026-09-01",
+    "application/pdf", 88_000, "demo-u-arjun"),
+  D("d9", "Completion_Pack_Draft.zip", "r15", "p5", "v2", "Under review", "2026-09-25", null,
+    "application/zip", 2_140_000, "demo-u-sneha"),
 ];
 
 export const tasks: Task[] = [
@@ -627,116 +631,42 @@ export const approvals: Approval[] = [
   },
 ];
 
+const A = (
+  id: string,
+  projectId: string,
+  type: Activity["type"],
+  entityType: Activity["entityType"],
+  entityId: string,
+  text: string,
+  actorUserId: string,
+  when: string,
+): Activity => ({
+  id,
+  organisationId: DEMO_ORGANISATION.id,
+  projectId,
+  type,
+  entityType,
+  entityId,
+  text,
+  actorUserId,
+  who: DEMO_USERS.find((u) => u.id === actorUserId)?.displayName ?? "Demo user (fictional)",
+  timestamp: `${when}T09:00:00.000Z`,
+  when,
+});
+
 export const activity: Activity[] = [
-  {
-    id: "ac1",
-    projectId: "p4",
-    text: "Approval DEMO-APP-0160 marked as submitted",
-    who: "Sneha Iyer",
-    when: "2026-10-18",
-  },
-  {
-    id: "ac2",
-    projectId: "p3",
-    text: "Drainage study draft added to register",
-    who: "Priya Nair",
-    when: "2026-10-14",
-  },
-  {
-    id: "ac3",
-    projectId: "p1",
-    text: "Changes requested on environmental assessment",
-    who: "Ananya Rao",
-    when: "2026-10-12",
-  },
-  {
-    id: "ac4",
-    projectId: "p1",
-    text: "Structural certificate uploaded — awaiting verification",
-    who: "Ananya Rao",
-    when: "2026-10-11",
-  },
-  {
-    id: "ac5",
-    projectId: "p1",
-    text: "Site plan v3 submitted",
-    who: "Vikram Mehta",
-    when: "2026-10-04",
-  },
-  {
-    id: "ac6",
-    projectId: "p5",
-    text: "Project placed on hold",
-    who: "Sneha Iyer",
-    when: "2026-09-30",
-  },
+  A("ac1", "p4", "approval.status_updated", "approval", "a5",
+    "Approval DEMO-APP-0160 marked as submitted", "demo-u-sneha", "2026-10-18"),
+  A("ac2", "p3", "document.registered", "document", "d6",
+    "Drainage study draft added to register", "demo-u-priya", "2026-10-14"),
+  A("ac3", "p1", "requirement.status_updated", "requirement", "r3",
+    "Changes requested on environmental assessment", "demo-u-ananya", "2026-10-12"),
+  A("ac4", "p1", "document.registered", "document", "d4",
+    "Structural certificate uploaded — awaiting verification", "demo-u-ananya", "2026-10-11"),
+  A("ac5", "p1", "requirement.status_updated", "requirement", "r2",
+    "Site plan v3 submitted", "demo-u-vikram", "2026-10-04"),
+  A("ac6", "p5", "project.location_updated", "project", "p5",
+    "Project placed on hold", "demo-u-sneha", "2026-09-30"),
 ];
 
 export const COMPLETE_STATUSES: ReqStatus[] = ["Approved", "Not applicable"];
-
-// Fictional templates adapted from this demo's existing examples, NOT statutory requirements.
-export interface ChecklistTemplateItem {
-  key: string;
-  name: string;
-  category: string;
-  notes: string;
-  stage?: ProjectStage;
-  requiredForTemplate: boolean;
-}
-export const CHECKLIST_TEMPLATES: Record<string, ChecklistTemplateItem[]> = {
-  Residential: [
-    {
-      key: "title",
-      name: "Land title documentation (example)",
-      category: "Land & title",
-      notes: "Fictional example — applicability and source require professional review.",
-      requiredForTemplate: true,
-    },
-    {
-      key: "site-plan",
-      name: "Site plan submission (example)",
-      category: "Planning",
-      notes: "Fictional example — not an official Maharashtra document list.",
-      requiredForTemplate: true,
-    },
-  ],
-  Commercial: [
-    {
-      key: "title",
-      name: "Land title documentation (example)",
-      category: "Land & title",
-      notes: "Fictional example — review against official sources.",
-      requiredForTemplate: true,
-    },
-    {
-      key: "zoning",
-      name: "Zoning confirmation (example)",
-      category: "Planning",
-      notes: "Fictional example — applicability must be reviewed.",
-      requiredForTemplate: true,
-    },
-  ],
-  "Plotted development": [
-    {
-      key: "layout",
-      name: "Layout plan draft (example)",
-      category: "Planning",
-      notes: "Fictional example — applicability must be reviewed.",
-      requiredForTemplate: true,
-    },
-    {
-      key: "drainage",
-      name: "Drainage study (example)",
-      category: "Infrastructure",
-      notes: "Optional fictional template item — professional review required.",
-      requiredForTemplate: false,
-    },
-  ],
-};
-// Mixed-use intentionally has no template: never invent requirements to fill a gap.
-export const PRE_APPROVAL_STEPS = [
-  "Engineer Drawing",
-  "Tracing",
-  "DSC on Application Form and Documents",
-  "Pre-Payment",
-] as const;

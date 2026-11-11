@@ -16,7 +16,8 @@ import { PreApprovalWorkflow } from "@/components/app/pre-approval-workflow";
 import { EditProjectLocation } from "@/components/app/edit-project-location";
 import { locationNames } from "@/lib/locations";
 import { APPLICATION_STATUSES, applicationRows } from "@/lib/workflow";
-import { CHECKLIST_TEMPLATES, type Approval } from "@/lib/demo-data";
+import { CHECKLIST_TEMPLATES } from "@/lib/templates";
+import type { Approval } from "@/lib/demo-data";
 import {
   Select,
   SelectContent,
