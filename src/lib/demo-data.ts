@@ -74,9 +74,10 @@ export interface DocumentRecord {
   projectId: string;
   version: string;
   status: "Pending" | "Received" | "Under review" | "Expired";
-  /** Registration/upload timestamp metadata (fixture date in demo mode). */
-  uploadedAt: string;
-  dateAdded: string;
+  /** Metadata registration date, never evidence of a file upload. */
+  registeredAt: string;
+  /** Actual file-upload timestamp; null because the demo stores no files. */
+  uploadedAt: string | null;
   reviewDate: string | null;
 }
 
@@ -431,7 +432,7 @@ const D = (
   projectId: string,
   version: string,
   status: DocumentRecord["status"],
-  dateAdded: string,
+  registeredAt: string,
   reviewDate: string | null,
   mimeType: string | null,
   fileSizeBytes: number | null,
@@ -448,8 +449,8 @@ const D = (
   projectId,
   version,
   status,
-  uploadedAt: dateAdded,
-  dateAdded,
+  registeredAt,
+  uploadedAt: null,
   reviewDate,
 });
 

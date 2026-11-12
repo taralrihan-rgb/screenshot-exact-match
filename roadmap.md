@@ -26,3 +26,10 @@
 - [x] .env git-ignore + .env.example; no credentials in repo
 - [x] 31 tests pass, typecheck clean, lint 0 errors, browser verification of core flows
 - [ ] Deferred to backend: persistence, auth, RLS, real file storage, four-role permission model
+
+## Final frontend corrections
+- [x] Typed repository reads/mutations with an in-memory demo adapter and persistence-independent UI store
+- [x] Strict calendar-date validation and deterministic date tests
+- [x] Cross-project document-reference validation without state changes
+- [x] Separate document registration dates from null upload timestamps
+- [ ] Run full tests, typecheck, lint, production build, and focused browser verification

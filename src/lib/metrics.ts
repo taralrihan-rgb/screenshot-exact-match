@@ -3,6 +3,7 @@
 // can inject a fixed anchor. Dates are compared as UTC-midnight ISO days to
 // keep parsing and timezone handling consistent.
 import { COMPLETE_STATUSES, type Requirement, type Task } from "./demo-data";
+import { isValidCalendarDate } from "./validation";
 
 /** Current local date as YYYY-MM-DD (timezone-safe, no UTC shift). */
 export function todayString(now: Date = new Date()): string {
@@ -13,7 +14,7 @@ export function todayString(now: Date = new Date()): string {
 }
 
 function isValidDay(date: string): boolean {
-  return /^\d{4}-\d{2}-\d{2}$/.test(date) && !Number.isNaN(Date.parse(`${date}T00:00:00Z`));
+  return isValidCalendarDate(date);
 }
 
 /** Overdue = has a valid deadline, not done, and the deadline is before today. */

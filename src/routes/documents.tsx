@@ -92,7 +92,7 @@ function Documents() {
                 <TableHead>Status</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Size</TableHead>
-                <TableHead>Added</TableHead>
+                <TableHead>Registered</TableHead>
                 <TableHead>Expiry / review</TableHead>
               </TableRow>
             </TableHeader>
@@ -117,7 +117,7 @@ function Documents() {
                     {formatSize(d.fileSizeBytes)}
                   </TableCell>
                   <TableCell className="whitespace-nowrap text-xs">
-                    {formatDate(d.dateAdded)}
+                    {formatDate(d.registeredAt)}
                   </TableCell>
                   <TableCell className="whitespace-nowrap text-xs">
                     {formatDate(d.reviewDate)}

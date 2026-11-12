@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Architecture
-- Demo fixtures live in `src/lib/demo-data.ts`; the store loads initial state only through `src/lib/repository.ts` (the future Supabase swap point) so pages stay unchanged.
+- Demo fixtures live in `src/lib/demo-data.ts`; `src/lib/repository.ts` defines the typed read/mutation contract and in-memory adapter, while the React store only binds that contract so pages stay persistence-independent.
 - Business logic is centralised: `src/lib/workflow.ts` (bundles, status mapping), `src/lib/validation.ts` (Zod input schemas), `src/lib/templates.ts` (versioned checklist templates), `src/lib/activity.ts` (typed activity events), `src/lib/types.ts` (org/user/role model — the four roles are a deliberate placeholder).
 - Overdue/upcoming calculations in `src/lib/metrics.ts` use the real current date with an injectable `today` for tests; `DEMO_TODAY` is fixture-only.
 - Workflow progress must never be presented as legal compliance; requirement applicability is never inferred automatically.

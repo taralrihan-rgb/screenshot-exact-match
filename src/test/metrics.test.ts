@@ -45,6 +45,13 @@ describe("Overdue calculations use the real current date", () => {
     expect(Number.isNaN(daysFromToday("", TODAY))).toBe(true);
     expect(Number.isNaN(daysFromToday("garbage", TODAY))).toBe(true);
   });
+  it("rejects impossible calendar days instead of normalizing them", () => {
+    expect(isOverdue("2026-02-31", false, TODAY)).toBe(false);
+    expect(isOverdue("2026-04-31", false, TODAY)).toBe(false);
+    expect(Number.isNaN(daysFromToday("2026-02-31", TODAY))).toBe(true);
+    expect(Number.isNaN(daysFromToday("2025-02-29", TODAY))).toBe(true);
+    expect(daysFromToday("2028-02-29", "2028-02-28")).toBe(1);
+  });
   it("counts upcoming days from the injected anchor", () => {
     expect(daysFromToday("2026-11-24", TODAY)).toBe(14);
     expect(daysFromToday("2026-11-10", TODAY)).toBe(0);
