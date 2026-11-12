@@ -18,12 +18,7 @@ export const ACTIVITY_EVENT_TYPES = [
 ] as const;
 export type ActivityEventType = (typeof ACTIVITY_EVENT_TYPES)[number];
 
-export type ActivityEntityType =
-  | "project"
-  | "requirement"
-  | "task"
-  | "approval"
-  | "document";
+export type ActivityEntityType = "project" | "requirement" | "task" | "approval" | "document";
 
 export interface ActivityEventInput {
   type: ActivityEventType;

@@ -47,7 +47,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   // Every mutation appends one typed activity event in the same transition.
   const withEvent = (
     s: State,
-    event: { type: ActivityEventType; projectId: string; entityType: ActivityEntityType; entityId: string; text: string },
+    event: {
+      type: ActivityEventType;
+      projectId: string;
+      entityType: ActivityEntityType;
+      entityId: string;
+      text: string;
+    },
   ): State => ({ ...s, activity: [makeActivityEvent(event), ...s.activity] });
 
   const updateTask = (
@@ -168,25 +174,41 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setTaskStatus: (id, status) =>
       updateTask(id, { status }, { type: "task.status_updated", text: `set to ${status}` }),
     setTaskResponsible: (id, responsible) =>
-      updateTask(id, { responsible }, {
-        type: "task.responsibility_changed",
-        text: `reassigned to ${responsible}`,
-      }),
+      updateTask(
+        id,
+        { responsible },
+        {
+          type: "task.responsibility_changed",
+          text: `reassigned to ${responsible}`,
+        },
+      ),
     setTaskDueDate: (id, dueDate) =>
-      updateTask(id, { dueDate }, {
-        type: "task.deadline_changed",
-        text: `target date set to ${dueDate || "Not set"}`,
-      }),
+      updateTask(
+        id,
+        { dueDate },
+        {
+          type: "task.deadline_changed",
+          text: `target date set to ${dueDate || "Not set"}`,
+        },
+      ),
     setRequirementStatus: (id, status) =>
-      updateRequirement(id, { status }, {
-        type: "requirement.status_updated",
-        text: `workflow status set to ${status} (workflow only, not legal compliance)`,
-      }),
+      updateRequirement(
+        id,
+        { status },
+        {
+          type: "requirement.status_updated",
+          text: `workflow status set to ${status} (workflow only, not legal compliance)`,
+        },
+      ),
     setRequirementResponsible: (id, responsible) =>
-      updateRequirement(id, { responsible }, {
-        type: "requirement.responsibility_changed",
-        text: `reassigned to ${responsible}`,
-      }),
+      updateRequirement(
+        id,
+        { responsible },
+        {
+          type: "requirement.responsibility_changed",
+          text: `reassigned to ${responsible}`,
+        },
+      ),
     registerDocument: (rawInput) => {
       // Metadata registration only — no file is uploaded or stored.
       const input = parseOrThrow(documentMetadataSchema, rawInput);

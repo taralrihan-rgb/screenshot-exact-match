@@ -71,25 +71,27 @@ export function createProjectBundle(rawInput: ProjectInput, id: string) {
     team: [input.owner],
   };
   const template = CHECKLIST_TEMPLATES[input.type];
-  const requirements: Requirement[] = (template?.items ?? [])
-    .filter((item) => !item.stage || item.stage === input.stage)
-    .map((item) => ({
-      id: `${id}-req-${item.key}`,
-      projectId: id,
-      templateKey: item.key,
-      templateVersion: template?.version,
-      required: item.requiredForTemplate,
-      name: item.name,
-      category: item.category,
-      notes: `${item.notes} ${item.requiredForTemplate ? "Required in fictional template." : "Optional in fictional template."}`,
-      applicability: "Needs review",
-      status: "Needs verification",
-      responsible: input.owner,
-      dueDate: "",
-      evidence: "Not uploaded",
-      sourceRef: "Fictional demo template — verify against applicable official sources",
-      lastVerified: null,
-    }));
+  const requirements: Requirement[] = !template
+    ? []
+    : template.items
+        .filter((item) => !item.stage || item.stage === input.stage)
+        .map((item) => ({
+          id: `${id}-req-${item.key}`,
+          projectId: id,
+          templateKey: item.key,
+          templateVersion: template.version,
+          required: item.requiredForTemplate,
+          name: item.name,
+          category: item.category,
+          notes: `${item.notes} ${item.requiredForTemplate ? "Required in fictional template." : "Optional in fictional template."}`,
+          applicability: "Needs review",
+          status: "Needs verification",
+          responsible: input.owner,
+          dueDate: "",
+          evidence: "Not uploaded",
+          sourceRef: "Fictional demo template — verify against applicable official sources",
+          lastVerified: null,
+        }));
   return { project, requirements, tasks: preApprovalTasks(project) };
 }
 export function preApprovalTasks(project: Project): Task[] {

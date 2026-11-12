@@ -69,8 +69,8 @@ function Documents() {
       />
       <p className="mb-4 rounded-md border border-dashed px-3 py-2 text-xs text-muted-foreground">
         This register records document metadata (name, version, status, dates). Registering a
-        document here does not upload or store any file. Secure file storage will be added with
-        the future backend.
+        document here does not upload or store any file. Secure file storage will be added with the
+        future backend.
       </p>
       <Input
         className="mb-4 sm:w-80"
@@ -175,8 +175,8 @@ function RegisterDocumentDialog({
         <DialogHeader>
           <DialogTitle>Register document metadata</DialogTitle>
           <DialogDescription>
-            This records metadata only. No file is uploaded, stored or linked. File storage
-            requires the future backend.
+            This records metadata only. No file is uploaded, stored or linked. File storage requires
+            the future backend.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4">

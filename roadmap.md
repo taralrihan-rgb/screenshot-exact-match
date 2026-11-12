@@ -18,3 +18,11 @@
 - [x] Tasks: reassign + project filter, verified in browser
 - [x] Create project validation + success, verified in browser
 - [x] Tests (1/1), tsgo typecheck, build OK
+
+## Frontend hardening & backend readiness
+- [x] Data-access layer (repository.ts), Zod validation, versioned templates, typed activity events, org/user model
+- [x] Real-date overdue metrics with injected-today tests; DEMO_TODAY fixture-only
+- [x] Honest document register: fake upload removed, metadata-only registration
+- [x] .env git-ignore + .env.example; no credentials in repo
+- [x] 31 tests pass, typecheck clean, lint 0 errors, browser verification of core flows
+- [ ] Deferred to backend: persistence, auth, RLS, real file storage, four-role permission model

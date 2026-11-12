@@ -1,12 +1,12 @@
 // Zod input validation — single source of truth for create/register inputs.
 import { z } from "zod";
-import { PROJECT_TYPES, STAGES, TEAM } from "./demo-data";
+import { PROJECT_TYPES, STAGES, TEAM, type ProjectStage } from "./demo-data";
 
 export const projectInputSchema = z.object({
   name: z.string().trim().min(3, "Enter a project name (min 3 characters)."),
   location: z.string().trim().min(1, "Enter a location."),
   type: z.string().refine((v) => PROJECT_TYPES.includes(v), "Choose a project type."),
-  stage: z.string().refine((v) => (STAGES as string[]).includes(v), "Choose a stage."),
+  stage: z.enum(STAGES as [ProjectStage, ...ProjectStage[]], { message: "Choose a stage." }),
   owner: z.string().refine((v) => TEAM.includes(v), "Assign a team member."),
   description: z.string(),
   talukaId: z.string().min(1),
