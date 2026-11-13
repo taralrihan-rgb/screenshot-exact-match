@@ -33,7 +33,12 @@ describe("Typed demo repository", () => {
 
     const project = repository.createProject(projectInput);
     expect(repository.listProjects()[0]?.id).toBe(project.id);
-    repository.updateProjectLocation(project.id, "Updated fictional site", "test-north", "test-lake");
+    repository.updateProjectLocation(
+      project.id,
+      "Updated fictional site",
+      "test-north",
+      "test-lake",
+    );
     expect(repository.listProjects()[0]?.villageId).toBe("test-lake");
 
     repository.setRequirementStatus("r1", "In progress");
@@ -108,7 +113,7 @@ describe("Typed demo repository", () => {
     const repository = createDemoRepository();
     expect(repository.listDocuments().every((item) => item.uploadedAt === null)).toBe(true);
     const document = repository.registerDocument(documentInput);
-    expect(document.registeredAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(Number.isNaN(Date.parse(document.registeredAt))).toBe(false);
     expect(document.uploadedAt).toBeNull();
     expect(document.storagePath).toBeNull();
   });

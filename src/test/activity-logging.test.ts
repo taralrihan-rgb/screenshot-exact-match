@@ -71,7 +71,7 @@ describe("Activity event logging", () => {
     const doc = result.current.documents.find((d) => d.id === docId);
     expect(doc?.storagePath).toBeNull();
     expect(doc?.fileSizeBytes).toBeNull();
-    expect(doc?.registeredAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(Number.isNaN(Date.parse(doc?.registeredAt ?? ""))).toBe(false);
     expect(doc?.uploadedAt).toBeNull();
     expect(result.current.activity[0]?.type).toBe("document.registered");
     expect(result.current.activity[0]?.entityId).toBe(docId);

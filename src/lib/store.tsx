@@ -3,11 +3,7 @@
 import { createContext, useContext, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { Approval, Project, ReqStatus, TaskStatus } from "./demo-data";
 import type { ProjectInput } from "./workflow";
-import {
-  createDemoRepository,
-  type DemoState,
-  type DocumentMetadataInput,
-} from "./repository";
+import { createDemoRepository, type DemoState, type DocumentMetadataInput } from "./repository";
 
 interface Store extends DemoState {
   addProject: (input: ProjectInput) => Project;

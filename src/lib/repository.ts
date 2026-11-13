@@ -17,12 +17,7 @@ import {
   type DocumentMetadataInput,
 } from "./validation";
 import { validLocation } from "./locations";
-import {
-  makeActivityEvent,
-  type ActivityEntityType,
-  type ActivityEventInput,
-  type ActivityEventType,
-} from "./activity";
+import { makeActivityEvent, type ActivityEventInput, type ActivityEventType } from "./activity";
 
 export type { DocumentMetadataInput } from "./validation";
 
@@ -271,7 +266,7 @@ export function createDemoRepository(): RealtifyRepository {
         projectId: input.projectId,
         version: input.version.trim(),
         status: input.status,
-        registeredAt: new Date().toISOString().slice(0, 10),
+        registeredAt: new Date().toISOString(),
         uploadedAt: null,
         reviewDate: input.reviewDate,
       };

@@ -74,7 +74,7 @@ export interface DocumentRecord {
   projectId: string;
   version: string;
   status: "Pending" | "Received" | "Under review" | "Expired";
-  /** Metadata registration date, never evidence of a file upload. */
+  /** Metadata registration timestamp (date-only in fixtures), never evidence of upload. */
   registeredAt: string;
   /** Actual file-upload timestamp; null because the demo stores no files. */
   uploadedAt: string | null;

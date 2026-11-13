@@ -31,5 +31,5 @@
 - [x] Typed repository reads/mutations with an in-memory demo adapter and persistence-independent UI store
 - [x] Strict calendar-date validation and deterministic date tests
 - [x] Cross-project document-reference validation without state changes
-- [x] Separate document registration dates from null upload timestamps
-- [ ] Run full tests, typecheck, lint, production build, and focused browser verification
+- [x] Separate document registration timestamps from null upload timestamps
+- [x] Run full tests, typecheck, lint, production build, and focused browser verification

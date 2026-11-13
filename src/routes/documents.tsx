@@ -117,7 +117,7 @@ function Documents() {
                     {formatSize(d.fileSizeBytes)}
                   </TableCell>
                   <TableCell className="whitespace-nowrap text-xs">
-                    {formatDate(d.registeredAt)}
+                    {formatDate(d.registeredAt.slice(0, 10))}
                   </TableCell>
                   <TableCell className="whitespace-nowrap text-xs">
                     {formatDate(d.reviewDate)}
